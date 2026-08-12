@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary: Beyond Manifold Learning</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- MathJax Configuration for LaTeX formatting -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* --- CORE THEME (Light Mode) --- */
+        :root {
+            --bg-dark: #ffffff; 
+            --bg-tile: #f8fafc; 
+            --border-color: #e2e8f0; 
+            --text-primary: #0f172a; 
+            --text-secondary: #475569; 
+            --accent-main: #0d9488; 
+            --accent-alt: #7c3aed; 
+            --accent-danger: #e11d48; 
+            --font-head: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --slide-scale: 1; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #cbd5e1; 
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* --- SLIDE DECK ARCHITECTURE --- */
+        #deck {
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .slide {
+            position: absolute;
+            width: 1280px;
+            height: 720px;
+            background-color: var(--bg-dark);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
+            padding: 30px 40px; 
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: scale(calc(var(--slide-scale) * 0.9)); 
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(var(--slide-scale)); 
+            z-index: 10;
+        }
+
+        /* --- TRANSITIONS & ANIMATIONS --- */
+        .fragment {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+        .fragment.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- TYPOGRAPHY & LAYOUT --- */
+        h1, h2, h3 { font-family: var(--font-head); font-weight: 700; color: var(--text-primary); }
+        h2 { font-size: 35px; margin-bottom: 15px; text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+        
+        .teal { color: var(--accent-main) !important; }
+        .violet { color: var(--accent-alt) !important; }
+        .danger { color: var(--accent-danger) !important; }
+        .gray { color: #64748b !important; }
+        .red { color: #ef4444 !important; }
+        .orange { color: #ada389 !important; }
+        .blue { color: #3523f1 !important; }
+
+        .three-col { 
+            display: grid; 
+            grid-template-columns: 31% 31% 35%; 
+            gap: 25px; 
+            height: 100%; 
+            align-items: start;
+        }
+        
+        .box {
+            background: var(--bg-tile);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 15px; 
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        /* Synchronized style boxes */
+        .box.canonical {
+            background: rgba(237, 231, 58, 0.06);
+            border-color: rgba(237, 231, 58, 0.5);
+        }        
+        .box.core-bias {
+            background: rgba(58, 237, 228, 0.06);
+            border-color: rgba(58, 237, 228, 0.5);
+        }        
+        .box h3 { font-size: 18px; margin-bottom: 8px; }
+        .box p { font-size: 14px; color: var(--text-secondary); margin-bottom: 5px; line-height: 1.3;}
+        
+        .img-container { display: flex; justify-content: center; align-items: center; width: 100%; height: 110px; margin-bottom: 5px; }
+        .img-container img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; }
+        /* Crop videos to fill their container while preserving aspect ratio */
+        .video-crop { position: relative; overflow: hidden; width: 100%; height: 140px; display: flex; align-items: center; justify-content: center; }
+        .video-crop video { width: 100%; height: 100%; object-fit: cover; }
+        .video-overlay {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            color: #136edf;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.025em;
+            text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0);
+            padding: 6px 14px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+        .video-overlay span { display: inline-block; margin: 0 32px; }
+
+        table.custom-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; color: var(--text-primary); margin: 5px 0; background: #fff;}
+        table.custom-table th { padding: 6px; border-bottom: 2px solid var(--border-color); font-weight: 600; }
+        table.custom-table td { padding: 6px; border-bottom: 1px solid var(--border-color); }
+
+        /* --- HUD CONTROLS --- */
+        #hud {
+            position: fixed; bottom: 20px; left: 0; width: 100%;
+            display: flex; justify-content: flex-end; padding: 0 40px;
+            z-index: 100; opacity: 1; pointer-events: auto;
+        }
+        #prev-btn, #next-btn {
+            display: none;
+        }
+        .btn {
+            background: #ffffff; color: var(--text-primary); border: 1px solid #94a3b8; border-radius: 8px;
+            padding: 10px 20px; font-family: var(--font-body); font-size: 16px; cursor: pointer; transition: 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-left: 10px;
+        }
+        .btn:hover { background: #f1f5f9; }
+    </style>
+</head>
+<body>
+
+    <div id="deck">
+        <!-- 5-Minute Summary Slide -->
+        <div class="slide" id="slide-0" data-max-steps="2">
+            <h2>A Tale of Two Biases:
+                <!-- The Missing Inductive Bias  -->
+                <span class="orange"> Beyond Manifold Learning</span>
+            </h2>
+            
+            <div class="three-col">
+                
+                <!-- COLUMN 1: Geometric Compression (Always visible) -->
+                <div>
+                    <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px;" class="orange">
+                        Geometric Compression 
+                    </h3>
+                    
+                    <div class="box">
+                        <p style="font-weight: 500;">Interpolation over Low-Dimensional Manifold</p>
+                        <div class="img-container" style="margin-top: 10px; margin-bottom: 1px;">
+                            <img src="figures/manifold_learning.png" alt="Manifold Learning" style="width: 90%; max-height: 120px; object-fit: contain;">
+                        </div>
+                    </div>
+
+                    <div class="box canonical">
+                        <h3>Canonical Problem</h3>
+                        <p style="margin-bottom: 10px; font-size: 13px;">Matrix Factorization &rarr; Matrix Completion</p>
+                        <div class="img-container" style="gap: 10px; margin-top: 10px; margin-bottom: 1px;">
+                            <img src="figures/HyperCubes_matrix_product_3layer.png" alt="Matrix Factorization" style="width: 45%;">
+                            <img src="figures/low_rank_matrix_transparent_black_cyan.png" alt="Matrix Completion" style="width: 45%; max-height: 140px; object-fit: contain;">
+                        </div>
+                    </div>
+
+                    <div class="box core-bias">
+                        <h3>Occam's Razor: <span class="orange">Low Rank Bias</span></h3>
+                        <div class="img-container" style="margin-top: 10px; margin-bottom: 0px;">
+                            <img src="figures/linear_net_svd_loss.png" alt="SVD loss" style="width: 90%; max-height: 100px; object-fit: contain;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: Algebraic Setup (Step 1) -->
+                <div class="fragment" data-step="1">
+                    <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px;" class="teal">
+                        Algebraic Compression 
+                    </h3>
+                    
+                    <div class="box">
+                        <p style="font-weight: 500;">Exact Algebraic Structure Over Discrete Symbols</p>
+                        <div class="img-container" style="border: 2px dashed #cbd5e1; background: #f8fafc; border-radius: 8px; margin-top: 10px;">
+                            <span class="gray" style="font-size: 13px; font-weight: 500;">
+                                [Insert: illustration for algebraic rule/structure ]
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="box canonical">
+                        <h3>Canonical Problem</h3>
+                        <p style="margin-bottom: 10px; font-size: 13px;">Tensor Factorization &rarr; Algebraic Completion</p>
+                        <div class="img-container" style="gap: 10px; margin-top: 10px; margin-bottom: 1px;">
+                            <img src="figures/HyperCube_product_only_transparent_small.png" alt="Tensor Factorization" style="width: 45%;">
+                            <img src="figures/cayley_S3_letter_seed5_partial_white_title.png" alt="Algebraic Table" style="width: 45%; max-height: 140px; object-fit: contain;">
+                        </div>
+                    </div>
+
+                    <div class="box core-bias">
+                        <!-- <h3 class="violet">Flatness $\implies$ Associativity Bias</h3> -->
+                        <h3>Flatness $\implies$ 
+                        <span class="violet">Associativity Bias</span></h3>
+                        <ul style="text-align: left; margin-left: 20px; font-size: 13px; margin-top: 5px; color: var(--text-primary);">
+                            <li style="margin-bottom: 4px;">
+                                <strong>Algorithmic Simplicity</strong> (Shortest Description)
+                                = Associativity (Group Isotopes) 
+                            </li>
+                            <li style="margin-bottom: 4px;">
+                                <strong>Theorem:</strong> 
+                                Optimizing for flatness 
+                                yields an <em>exact, differentiable measure</em> of associativity.
+                            </li>
+                        </ul>
+                        <p style="font-size: 13px; margin-top: 8px; font-weight: 600; color: var(--accent-main);">
+                            Flatness natively discovers exact group structures.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- COLUMN 3: Algebraic Results (Step 2) -->
+                <div class="fragment" data-step="2">
+                    <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px;" class="teal">
+                        Results 
+                    </h3>
+                                    
+                    <div class="box" style="border-color: var(--accent-main); background: rgba(13, 148, 136, 0.03); height: 49%; display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="font-size: 16px;">
+                            <!-- Exact Recovery of <br>  -->
+                            <span class="gray">Exact</span> Group Structure <span class="gray">&</span> Unitary Representation
+                            <!-- Group Structure & Unitary Representation <br> Exact Recovery -->
+                        </h3>
+
+                        <div class="img-container video-crop step-element as-block" data-start="2">
+                            <div class="video-overlay"><span>Product Tensor</span><span>Factor Tensor</span></div>
+                            <video loop muted width="100%" height="100%" onloadedmetadata="this.playbackRate = 0.9;">
+                                <source src="figures/binary_sym3_xy_55_seed5_1_lr_0.5_momentum_0.1_wd_T_A_merged.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="box" style="border-color: var(--accent-alt); background: rgba(124, 58, 237, 0.03); height: 47%; display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="font-size: 16px;">
+                            Compression Efficiency
+                        </h3>
+                        
+                        <table class="custom-table" style="font-size: 13.5px; margin-bottom: 5px;">
+                            <thead>
+                                <tr>
+                                    <th>Target</th>
+                                    <th><strong>gzip</strong></th>
+                                    <th style="text-align: center;"><strong>Our Method</strong></th>
+                                    <th style="text-align: center;"><strong>Limit</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- N=24 Group -->
+                                <tr>
+                                    <td>$C_{24}$</td>
+                                    <td>77 Bytes</td>
+                                    <td rowspan="3" style="vertical-align: middle; text-align: center; border-left: 1px solid var(--border-color);">
+                                        <strong>76 Bytes</strong><br>
+                                    </td>
+                                    <td rowspan="3" style="vertical-align: middle; text-align: center; border-left: 1px solid var(--border-color);">
+                                        <strong>~30 Bytes</strong>
+                                    </td>                                    
+                                </tr>
+                                <tr>
+                                    <td>$S_4$</td>
+                                    <td>206 Bytes</td>
+                                </tr>
+                                <tr>
+                                    <td>$S_4$ Isotope</td>
+                                    <td><span style="color: var(--accent-danger); font-weight: 600;">366 Bytes</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box">
+                        <h3><span class="violet">Algebraic Structure</span> vs <span class="gray">Smooth Manifold</span></h3>
+                                                    
+
+                        <p style="font-size: 13.5px; font-weight: 350; color: var(--text-primary); line-height: 1.4; margin-top: 5px; text-align: left;">
+                            Our framework unlocks a <strong>novel generalization paradigm</strong> for deep learning <span class="gray" style="font-weight: 600;">beyond smooth interpolation</span>: to natively discover <strong>exact algebraic structures</strong>.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Minimal HUD Controls for clicking through -->
+    <div id="hud">
+        <button class="btn" id="prev-btn"><i class="fa-solid fa-arrow-left"></i> Prev</button>
+        <button class="btn" id="next-btn">Next <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slide = document.querySelector('.slide');
+            let currentStep = 0; 
+            const maxSteps = parseInt(slide.getAttribute('data-max-steps') || 2);
+
+            function resizeDeck() {
+                const availableHeight = window.innerHeight - 80; 
+                const availableWidth = window.innerWidth;
+                const scale = Math.min(availableWidth / 1280, availableHeight / 720) * 0.95;
+                document.documentElement.style.setProperty('--slide-scale', scale);
+            }
+            window.addEventListener('resize', resizeDeck);
+            resizeDeck();
+            slide.classList.add('active');
+
+            function updateSteps() {
+                const fragments = slide.querySelectorAll('[data-step]');
+                fragments.forEach(el => {
+                    const step = parseInt(el.getAttribute('data-step'));
+                    const shouldShow = currentStep >= step;
+                    if (shouldShow) {
+                        el.classList.add('visible');
+                        // Auto-play any videos inside this fragment (muted to satisfy autoplay policies)
+                        el.querySelectorAll('video').forEach(v => {
+                            try {
+                                v.muted = true;
+                                const p = v.play();
+                                if (p && p.catch) p.catch(() => {});
+                            } catch (e) {
+                                // ignore
+                            }
+                        });
+                    } else {
+                        el.classList.remove('visible');
+                        // Pause and rewind any videos when fragment hidden
+                        el.querySelectorAll('video').forEach(v => {
+                            try { v.pause(); v.currentTime = 0; } catch (e) {}
+                        });
+                    }
+                });
+            }
+
+            document.getElementById('next-btn').addEventListener('click', () => {
+                if (currentStep < maxSteps) {
+                    currentStep++;
+                    updateSteps();
+                }
+            });
+
+            document.getElementById('prev-btn').addEventListener('click', () => {
+                if (currentStep > 0) {
+                    currentStep--;
+                    updateSteps();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); document.getElementById('next-btn').click(); }
+                if (e.key === 'ArrowLeft') document.getElementById('prev-btn').click();
+            });
+        });
+    </script>
+</body>
+</html>
