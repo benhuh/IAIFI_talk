@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summary: Beyond Manifold Learning</title>
+    <title>IAIFI talk: Beyond Manifold Learning</title>
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,7 +64,7 @@
         .slide {
             position: absolute;
             width: 1280px;
-            height: 720px;
+            height: 750px;
             background-color: var(--bg-dark);
             border-radius: 12px;
             border: 1px solid var(--border-color);
@@ -187,11 +187,41 @@
     <div id="deck">
         <!-- 5-Minute Summary Slide -->
         <div class="slide" id="slide-0" data-max-steps="2">
-            <h2>A Tale of Two Biases:
-                <!-- The Missing Inductive Bias  -->
-                <span class="orange"> Beyond Manifold Learning</span>
-            </h2>
-            
+
+<div style="border-bottom: 2px solid var(--border-color); margin-bottom: 15px; padding-bottom: 12px; display: flex; justify-content: center;">
+                
+                <!-- CSS Grid to perfectly align the ':' and '|' -->
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; column-gap: 10px; row-gap: 6px; align-items: baseline;">
+                    
+                    <!-- Title Row -->
+                    <h2 style="grid-column: 1; text-align: right; border-bottom: none; margin: 0; padding: 0;">
+                        A Tale of Two Biases
+                        <!-- The Missing Inductive Bias  -->
+                    </h2>
+                    <h2 style="grid-column: 2; text-align: center; border-bottom: none; margin: 0; padding: 0;">
+                        :
+                    </h2>
+                    <h2 style="grid-column: 3; text-align: left; border-bottom: none; margin: 0; padding: 0;" class="orange">
+                        Beyond Manifold Learning
+                    </h2>
+                    
+                    <!-- Author Row -->
+                    <p style="grid-column: 1; text-align: right; font-size: 16px; color: var(--text-secondary); font-family: var(--font-body); margin: 0;">
+                        <strong>Dongsung Huh</strong>
+                    </p>
+                    <p style="grid-column: 2; text-align: center; font-size: 16px; color: var(--text-secondary); font-family: var(--font-body); margin: 0;">
+                        |
+                    </p>
+                    <p style="grid-column: 3; text-align: left; font-size: 16px; color: var(--text-secondary); font-family: var(--font-body); margin: 0;" class="orange">
+                        Centaur AI  
+                        <!-- &  IAIFI -->
+                    </p>
+                    
+                </div>
+                
+            </div>            
+
+
             <div class="three-col">
                 
                 <!-- COLUMN 1: Geometric Compression (Always visible) -->
@@ -212,17 +242,27 @@
                         <p style="margin-bottom: 10px; font-size: 13px;">Matrix Factorization &rarr; Matrix Completion</p>
                         <div class="img-container" style="gap: 10px; margin-top: 10px; margin-bottom: 1px;">
                             <img src="figures/HyperCubes_matrix_product_3layer.png" alt="Matrix Factorization" style="width: 45%;">
-                            <img src="figures/low_rank_matrix_transparent_black_cyan.png" alt="Matrix Completion" style="width: 45%; max-height: 140px; object-fit: contain;">
+                            <img src="figures/low_rank_matrix_transparent_black_white.png" alt="Matrix Completion" style="width: 45%; max-height: 140px; object-fit: contain;">
                         </div>
                     </div>
 
                     <div class="box core-bias">
-                        <h3>Occam's Razor: <span class="orange">Low Rank Bias</span></h3>
-                        <div class="img-container" style="margin-top: 10px; margin-bottom: 0px;">
-                            <img src="figures/linear_net_svd_loss.png" alt="SVD loss" style="width: 90%; max-height: 100px; object-fit: contain;">
+                        <h3>
+                            <span class="orange">Low-Rank</span> as Occam's Razor 
+                            <!-- <span class="orange">Low Rank Bias</span> -->
+                        </h3>
+                        <div class="img-container" style="margin-top: -10px; margin-bottom: 0px;">
+                            <img src="figures/linear_net_svd_loss_trim_transparent.png" alt="SVD loss" style="width: 90%; max-height: 100px; object-fit: contain;">
                         </div>
+                        <p style="font-size: 13px; margin-top: 0px; margin-bottom: -5px; font-weight: 600; color: green;">
+                        <!-- <p style="font-size: 13px; margin-top: 8px; font-weight: 600; color: var(--accent-danger);" class="violet"> -->
+                            <span class="orange">Rank</span>:
+                            Deep Learning's <span class="gray">implicit</span> simplicity.
+                        </p>
                     </div>
                 </div>
+
+                <!-- This geometric compression of rank reduction is what drives feature learning and generalization in Deep Neural Nets. -->
 
                 <!-- COLUMN 2: Algebraic Setup (Step 1) -->
                 <div class="fragment" data-step="1">
@@ -231,11 +271,18 @@
                     </h3>
                     
                     <div class="box">
-                        <p style="font-weight: 500;">Exact Algebraic Structure Over Discrete Symbols</p>
-                        <div class="img-container" style="border: 2px dashed #cbd5e1; background: #f8fafc; border-radius: 8px; margin-top: 10px;">
-                            <span class="gray" style="font-size: 13px; font-weight: 500;">
-                                [Insert: illustration for algebraic rule/structure ]
-                            </span>
+                        <p style="font-weight: 500;">Algebraic Structures over a Finite Set of Symbols</p>
+                        <!-- <div class="img-container" style="border: 2px dashed #cbd5e1; background: #f8fafc; border-radius: 8px; margin-top: 10px;"> -->
+                        <div class="img-container" style="margin-top: 10px; margin-bottom: 1px;">
+                            <img src="figures/Rubiks_cube_cayley_graph_transparent.png" alt="Algebraic Learning" style="width: 100%; max-height: 130px; object-fit: contain;">
+                            <!-- <img src="figures/53SiW.png" alt="Algebraic Learning" style="width: 100%; max-height: 110px; object-fit: contain;">
+                            <img src="figures/sKo3P.png" alt="Algebraic Learning" style="width: 100%; max-height: 110px; object-fit: contain;"> -->
+                            <!-- <img src="figures/Vel1.jpg" alt="Algebraic Learning" style="width: 100%; max-height: 110px; object-fit: contain;">
+                            <img src="figures/Vel2.jpg" alt="Algebraic Learning" style="width: 100%; max-height: 110px; object-fit: contain;"> -->
+                            
+                            <!-- <span class="gray" style="font-size: 13px; font-weight: 500;">
+                                [ Illustration of Algebraic Rules/Structures ]
+                            </span> -->
                         </div>
                     </div>
 
@@ -244,29 +291,73 @@
                         <p style="margin-bottom: 10px; font-size: 13px;">Tensor Factorization &rarr; Algebraic Completion</p>
                         <div class="img-container" style="gap: 10px; margin-top: 10px; margin-bottom: 1px;">
                             <img src="figures/HyperCube_product_only_transparent_small.png" alt="Tensor Factorization" style="width: 45%;">
-                            <img src="figures/cayley_S3_letter_seed5_partial_white_title.png" alt="Algebraic Table" style="width: 45%; max-height: 140px; object-fit: contain;">
+                            <!-- <img src="figures/cayley_S3_letter_seed5_partial_white_title.png" alt="Algebraic Table" style="width: 45%; max-height: 140px; object-fit: contain;"> -->
+                            <img src="figures/cayley_addition_symbol.png" alt="Algebraic Table" style="width: 45%; max-height: 140px; object-fit: contain;">
                         </div>
                     </div>
 
-                    <div class="box core-bias">
-                        <!-- <h3 class="violet">Flatness $\implies$ Associativity Bias</h3> -->
-                        <h3>Flatness $\implies$ 
-                        <span class="violet">Associativity Bias</span></h3>
+                    <!-- <div class="box core-bias">
+                        <h3>The <span class="teal">Associativity Bias</span></h3>
                         <ul style="text-align: left; margin-left: 20px; font-size: 13px; margin-top: 5px; color: var(--text-primary);">
+                            <li style="margin-bottom: 6px;">
+                                <strong>1. The Objective (MDL):</strong> Within discrete algebraic operations, <em>associativity</em> yields the shortest description length.
+                            </li>
+                            <li style="margin-bottom: 2px;">
+                                <strong>2. The Mechanism (Theorem):</strong> Optimizing for a <strong>flat minimum</strong> (Hessian trace) naturally minimizes associativity violations.
+                            </li>
+                        </ul>
+                    </div> -->
+
+                    <div class="box core-bias">
+                        <h3>
+                            <span class="teal">Associativity/Closure</span> as Occam's Razor
+                            <!-- Flat Minima $\implies$ <span class="teal">Associativity</span> -->
+                        </h3>
+                        <ul style="text-align: left; margin-left: 20px; font-size: 13px; margin-top: 5px; color: var(--text-primary);">
+                            <li style="margin-bottom: 6px;">
+                                <strong>Algorithmic Simplicity (MDL)</strong> 
+                                of a binary operation is (largely) determined by  <strong>Associativity</strong>.
+                                <!-- (minimum description length) of algebraic rules. -->
+                            </li>
+                            <li style="margin-bottom: 2px;">
+                                <strong>Theorem:</strong> Hessian trace implicitly defines an exact, differentiable metric for associativity violations.
+                            </li>
+                        </ul>
+                        <p style="font-size: 13px; margin-top: 8px; font-weight: 600; color: var(--accent-danger);">
+                            <!-- Flatness natively discovers exact group structures. -->
+                            Flatness induces associativity as native simplicity.
+                        </p>
+                    </div>
+
+                    <!-- <div class="box core-bias">
+                        <h3>Flat Minimum $\implies$ <span class="teal">Associativity Bias</span></h3>
+                        <div style="text-align: left; font-size: 13px; margin-top: 8px; padding: 0 10px; color: var(--text-primary);">
+                            <p style="margin-bottom: 8px;">
+                                <strong>1. Occam's Razor:</strong> Shortest description length = Associativity.
+                            </p>
+                            <p>
+                                <strong>2. Optimization:</strong> Flatness inherently penalizes associativity violations, natively discovering group structures.
+                            </p>
+                        </div>
+                    </div> -->
+
+                    <!-- <div class="box core-bias">
+                        <h3>Flat Minimum $\implies$ <span class="teal">Associativity Bias</span></h3> <ul style="text-align: left; margin-left: 20px; font-size: 13px; margin-top: 5px; color: var(--text-primary);">
                             <li style="margin-bottom: 4px;">
                                 <strong>Algorithmic Simplicity</strong> (Shortest Description)
                                 = Associativity (Group Isotopes) 
                             </li>
                             <li style="margin-bottom: 4px;">
                                 <strong>Theorem:</strong> 
-                                Optimizing for flatness 
+                                Optimizing for flatness (Hessian trace)
                                 yields an <em>exact, differentiable measure</em> of associativity.
                             </li>
                         </ul>
-                        <p style="font-size: 13px; margin-top: 8px; font-weight: 600; color: var(--accent-main);">
+                        <p style="font-size: 13px; margin-top: 8px; font-weight: 600; color: var(--accent-danger);">
                             Flatness natively discovers exact group structures.
                         </p>
-                    </div>
+                    </div> -->
+
                 </div>
 
                 <!-- COLUMN 3: Algebraic Results (Step 2) -->
@@ -276,9 +367,10 @@
                     </h3>
                                     
                     <div class="box" style="border-color: var(--accent-main); background: rgba(13, 148, 136, 0.03); height: 49%; display: flex; flex-direction: column; justify-content: center;">
-                        <h3 style="font-size: 16px;">
+                        <h3 style="font-size: 16px; font-weight:400">
                             <!-- Exact Recovery of <br>  -->
-                            <span class="gray">Exact</span> Group Structure <span class="gray">&</span> Unitary Representation
+                            <!-- <span class="gray">Exact</span> Group Structure <span class="gray">&</span> Unitary Representation -->
+                            Discovers <strong>Group Structure</strong> &  <strong>Unitary Representation</strong>
                             <!-- Group Structure & Unitary Representation <br> Exact Recovery -->
                         </h3>
 
@@ -286,11 +378,12 @@
                             <div class="video-overlay"><span>Product Tensor</span><span>Factor Tensor</span></div>
                             <video loop muted width="100%" height="100%" onloadedmetadata="this.playbackRate = 0.9;">
                                 <source src="figures/binary_sym3_xy_55_seed5_1_lr_0.5_momentum_0.1_wd_T_A_merged.mp4" type="video/mp4">
+                                <!-- <source src="figures/binary_+_55_seed5_1_lr_0.5_momentum_0.1_wd_T_A_merged.mp4" type="video/mp4"> -->
                             </video>
                         </div>
                     </div>
 
-                    <div class="box" style="border-color: var(--accent-alt); background: rgba(124, 58, 237, 0.03); height: 47%; display: flex; flex-direction: column; justify-content: center;">
+                    <div class="box" style="border-color: var(--accent-alt); background: rgba(124, 58, 237, 0.03); height: 47%; display: flex; flex-direction: column; justify-content: center; margin-top: 20px;">
                         <h3 style="font-size: 16px;">
                             Compression Efficiency
                         </h3>
@@ -300,8 +393,8 @@
                                 <tr>
                                     <th>Target</th>
                                     <th><strong>gzip</strong></th>
-                                    <th style="text-align: center;"><strong>Our Method</strong></th>
-                                    <th style="text-align: center;"><strong>Limit</strong></th>
+                                    <th style="text-align: center;"><strong><span class="teal">Our Method</span></strong></th>
+                                    <th style="text-align: center;"><strong>MDL Limit</strong></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -310,7 +403,7 @@
                                     <td>$C_{24}$</td>
                                     <td>77 Bytes</td>
                                     <td rowspan="3" style="vertical-align: middle; text-align: center; border-left: 1px solid var(--border-color);">
-                                        <strong>76 Bytes</strong><br>
+                                        <strong><span class="teal">76 Bytes</span></strong><br>
                                     </td>
                                     <td rowspan="3" style="vertical-align: middle; text-align: center; border-left: 1px solid var(--border-color);">
                                         <strong>~30 Bytes</strong>
@@ -327,10 +420,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="box">
-                        <h3><span class="violet">Algebraic Structure</span> vs <span class="gray">Smooth Manifold</span></h3>
+                    <div class="box" style="margin-top: 20px;"">
+                        <h3><span class="teal">Algebraic Structure</span> vs <span class="orange">Smooth Manifold</span></h3>
                                                     
-
                         <p style="font-size: 13.5px; font-weight: 350; color: var(--text-primary); line-height: 1.4; margin-top: 5px; text-align: left;">
                             Our framework unlocks a <strong>novel generalization paradigm</strong> for deep learning <span class="gray" style="font-weight: 600;">beyond smooth interpolation</span>: to natively discover <strong>exact algebraic structures</strong>.
                         </p>
