@@ -397,7 +397,7 @@
                             Natural data resides on a very low-dimensional manifold compared to its ambient dimensions.
                         </li>
                         <li style="margin-bottom: 8px;">
-                            Deep neural networks generalize by exploiting this <strong>geometric compressibility</strong>—by discovering this intrinsic low-dimensional manifold and smoothly interpolating over it.
+                            Deep neural networks generalize by being very good at exploiting this <strong>geometric compressibility</strong>—by discovering this intrinsic low-dimensional manifold and smoothly interpolating over it.
                         </li>
                         <li style="margin-bottom: 8px;">
                             This mechanism has been rigorously studied in the canonical setting of matrix factorization on the classic matrix completion task, revealing exactly how deep architectures build a natural preference toward low-rank solutions.
@@ -412,21 +412,23 @@
                     <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 1 (0:45 - 1:30) - Column 2: The New Paradigm</strong></p>
                     <ul style="margin-left: 20px; line-height: 1.4;">
                         <li style="margin-bottom: 8px;">
-                            While this geometric low-rank bias is highly effective for the continuous, in-distribution approximation of natural data, it has a fundamental blind spot. Standard deep learning is prone to latching onto spurious features and struggles to efficiently discover exact, algorithmic rules that robustly generalize out-of-distribution.
+                            While this geometric low-rank bias is highly effective for the continuous, in-distribution approximation of natural data, it has a fundamental blind spot. It is prone to learning spurious features and struggles to efficiently discover exact, algorithmic rules that robustly generalize out-of-distribution.
                         </li>
                         <li style="margin-bottom: 8px;">
-                            The canonical testbed for this is recovering a finite binary operation table—essentially the algebraic counterpart to matrix completion.
+                            The canonical testbed for this (effect) is recovering a finite binary operation table, as shown here, which describes $x \circ y = z$, for an unknown operation $\circ$—essentially the symbolic, and algebraic counterpart to matrix completion.
                         </li>
                         <li style="margin-bottom: 8px;">
-                            And standard deep learning models notoriously struggle at this task.
-                        </li>
-                        <li style="margin-bottom: 8px;">
+                            Standard deep learning models 
+                            <!-- are quite bad -->
+                            notoriously suffer 
+                            <!-- struggle  -->
+                            at this task. 
                             That's because "rank" is not the right Occam's Razor for algebraic structures.
                         </li>
                         <li style="margin-bottom: 8px;">
-                            The true measure of algorithmic simplicity is the Minimum Description Length, or MDL. And for binary operations, that MDL is largely determined by <strong>Associativity</strong>. This defines a fundamentally distinct notion of simplicity.
+                            The true algorithmic simplicity is measured by the Minimum Description Length, or MDL. And for this task, MDL is largely determined by <strong>Associativity</strong> of the operation, which is a fundamentally distinct notion of simplicity.
                         </li>
-                        <li>How can we induce this bias?</li>                        
+                        <li>How can we induce such simplicity bias?</li>                        
                     </ul>
                 </div>
 
@@ -435,8 +437,8 @@
                     <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 2 (1:30 - 2:30) - Column 2: Associativity & Flatness</strong></p>
                     <ul style="margin-left: 20px; line-height: 1.4;">
                         <li style="margin-bottom: 8px;">First, we use a tensor factorization model that maps symbols to matrix embeddings, rather than standard vector embeddings.</li>
-                        <li style="margin-bottom: 8px;">Then, we optimize for a <strong>flat minimum</strong> by minimizing the Hessian trace.</li>
-                        <li style="margin-bottom: 8px;">Remarkably, we prove this trace yields an exact, differentiable metric for associativity violations (up to isotopy) by enforcing homomorphism of the matrix embeddings.</li>
+                        <li style="margin-bottom: 8px;">Then, we optimize for a <strong>flatness</strong> by minimizing the Hessian trace of the landscape.</li>
+                        <li style="margin-bottom: 8px;">Remarkably, we prove that this trace yields an exact, differentiable metric for associativity (violations) (up to isotopy) by enforcing homomorphism of the matrix embeddings.</li>
                         <li>This proves that the discrete algebraic notion of simplicity can be natively induced within the continuous, differentiable framework of deep learning.</li>
                     </ul>
                 </div>
@@ -461,7 +463,7 @@
 
                         <li style="margin-bottom: 8px;"><strong>While not shown in this slide, our broader empirical results show this native structural bias also yields massive improvements in convergence speed and sample efficiency over standard models.</strong></li>
 
-                        <li style="margin-bottom: 8px;"><strong>Conclusion:</strong> This provides an existence proof for a fundamentally distinct paradigm, demonstrating that generalization can be driven by discovering exact algebraic axioms rather than standard smooth manifold interpolation.</li>
+                        <li style="margin-bottom: 8px;"><strong>Conclusion:</strong> This work provides an existence proof for a fundamentally distinct paradigm, demonstrating that generalization can be driven by discovering exact algebraic axioms rather than learning smooth manifolds for interpolation.</li>
                         
                         <li>Ultimately, it points toward a future where neural networks don't just perform continuous approximation, but also natively discover the discrete, symbolic laws of nature—such as extracting unknown symmetry groups directly from raw data.
                             Thank you.
