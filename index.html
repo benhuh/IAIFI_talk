@@ -572,35 +572,89 @@
                 notesDiv.style.display = notesDiv.style.display === 'none' || notesDiv.style.display === '' ? 'block' : 'none';
             });
 
-            document.getElementById('open-presenter-view').addEventListener('click', () => {
+document.getElementById('open-presenter-view').addEventListener('click', () => {
                 const presenterWin = window.open('', 'PresenterView', 'width=600,height=800');
                 
                 // Write a basic presenter view HTML
                 presenterWin.document.write(`
+                    <!DOCTYPE html>
                     <html>
                     <head>
                         <title>Presenter View</title>
+                        <!-- 1. Viewport tag for mobile rendering -->
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
                         <style>
-                            body { font-family: 'Inter', sans-serif; padding: 20px; background: #0f172a; color: #f8fafc; }
-                            h2 { color: #38bdf8; border-bottom: 1px solid #334155; padding-bottom: 10px; }
-                            /* Fixed: Target .step-element instead of .step-container */
+                            body { 
+                                font-family: 'Inter', sans-serif; 
+                                padding: 20px 20px 100px 20px; /* Extra bottom padding for fixed controls */
+                                background: #0f172a; 
+                                color: #f8fafc; 
+                                margin: 0;
+                            }
+                            h2 { color: #38bdf8; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-top: 0; }
                             .step-element { display: none; margin-bottom: 20px; padding: 15px; background: #1e293b; border-radius: 8px;}
                             .step-element.active { display: block; }
                             li { margin-bottom: 12px; line-height: 1.5; font-size: 16px; }
+                            
+                            /* 2. Mobile-friendly, fixed-bottom control bar */
+                            #controls {
+                                position: fixed;
+                                bottom: 0;
+                                left: 0;
+                                width: 100%;
+                                background: #0f172a;
+                                display: flex;
+                                padding: 15px;
+                                box-sizing: border-box;
+                                border-top: 1px solid #334155;
+                                gap: 15px;
+                                z-index: 1000;
+                            }
+                            .ctrl-btn {
+                                flex: 1;
+                                background: #38bdf8;
+                                color: #0f172a;
+                                border: none;
+                                padding: 18px;
+                                font-size: 20px;
+                                font-weight: bold;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                touch-action: manipulation; /* Prevents 300ms delay and double-tap zoom on iOS/Android */
+                            }
+                            .ctrl-btn:active { background: #0ea5e9; }
                         </style>
                     </head>
                     <body>
-                        <h2>Presenter View - Speaker Notes</h2>
+                        <h2>Speaker Notes</h2>
                         <div id="notes-wrapper">
                             ${document.getElementById('inline-notes').innerHTML}
                         </div>
+                        
+                        <!-- 3. The control buttons -->
+                        <div id="controls">
+                            <button class="ctrl-btn" id="p-prev-btn">Prev</button>
+                            <button class="ctrl-btn" id="p-next-btn">Next</button>
+                        </div>
+
                         <script>
+                            // 4. Send clicks back to the main presentation window
+                            document.getElementById('p-prev-btn').addEventListener('click', () => {
+                                if (window.opener && !window.opener.closed) {
+                                    window.opener.document.getElementById('prev-btn').click();
+                                }
+                            });
+                            
+                            document.getElementById('p-next-btn').addEventListener('click', () => {
+                                if (window.opener && !window.opener.closed) {
+                                    window.opener.document.getElementById('next-btn').click();
+                                }
+                            });
+
                             // Initial sync
                             function syncStep(step) {
                                 document.querySelectorAll('.step-element').forEach(el => {
                                     el.classList.remove('active');
-                                    
-                                    // Fixed: Parse both start and end steps for range logic
                                     const start = parseInt(el.getAttribute('data-start') || 0);
                                     const end = parseInt(el.getAttribute('data-end') || start);
                                     
@@ -609,10 +663,13 @@
                                     }
                                 });
                             }
-                            syncStep(${currentStep});
                             
-                            // Listen to messages from the main window if possible, or poll
-                            // A simple polling mechanism to keep it synced without complex postMessage setup for local files
+                            // Initialize immediately
+                            if (window.opener && !window.opener.closed) {
+                                syncStep(window.opener.currentStep);
+                            }
+                            
+                            // Poll for changes in case the main window is advanced via keyboard
                             setInterval(() => {
                                 if (window.opener && !window.opener.closed) {
                                     const mainStep = window.opener.currentStep;
@@ -624,8 +681,8 @@
                     </html>
                 `);
                 presenterWin.document.close();
-            });
-            
+            }); 
+                       
             // Expose currentStep to global scope for the presenter window to read
             window.currentStep = currentStep;
             const originalUpdate = updateSteps;
