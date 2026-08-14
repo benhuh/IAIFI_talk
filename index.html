@@ -583,8 +583,9 @@
                         <style>
                             body { font-family: 'Inter', sans-serif; padding: 20px; background: #0f172a; color: #f8fafc; }
                             h2 { color: #38bdf8; border-bottom: 1px solid #334155; padding-bottom: 10px; }
-                            .step-container { display: none; margin-bottom: 20px; padding: 15px; background: #1e293b; border-radius: 8px;}
-                            .step-container.active { display: block; }
+                            /* Fixed: Target .step-element instead of .step-container */
+                            .step-element { display: none; margin-bottom: 20px; padding: 15px; background: #1e293b; border-radius: 8px;}
+                            .step-element.active { display: block; }
                             li { margin-bottom: 12px; line-height: 1.5; font-size: 16px; }
                         </style>
                     </head>
@@ -598,7 +599,12 @@
                             function syncStep(step) {
                                 document.querySelectorAll('.step-element').forEach(el => {
                                     el.classList.remove('active');
-                                    if(parseInt(el.getAttribute('data-start')) === step) {
+                                    
+                                    // Fixed: Parse both start and end steps for range logic
+                                    const start = parseInt(el.getAttribute('data-start') || 0);
+                                    const end = parseInt(el.getAttribute('data-end') || start);
+                                    
+                                    if(step >= start && step <= end) {
                                         el.classList.add('active');
                                     }
                                 });
