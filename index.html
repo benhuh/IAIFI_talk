@@ -165,15 +165,37 @@
         table.custom-table th { padding: 6px; border-bottom: 2px solid var(--border-color); font-weight: 600; }
         table.custom-table td { padding: 6px; border-bottom: 1px solid var(--border-color); }
 
+        /* --- SPEAKER NOTES OVERLAY --- */
+        .speaker-note {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 400px;
+            max-height: 80%;
+            overflow-y: auto;
+            background: rgba(15, 23, 42, 0.95);
+            color: #f8fafc;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 1000;
+            border: 1px solid #334155;
+            font-size: 14px;
+        }
+        .speaker-note .step-element {
+            display: none;
+        }
+        .speaker-note .step-element.active-note {
+            display: block;
+        }
+
         /* --- HUD CONTROLS --- */
         #hud {
             position: fixed; bottom: 20px; left: 0; width: 100%;
             display: flex; justify-content: flex-end; padding: 0 40px;
             z-index: 100; opacity: 1; pointer-events: auto;
         }
-        #prev-btn, #next-btn {
-            display: none;
-        }
+        #prev-btn, #next-btn { display: none; }
         .btn {
             background: #ffffff; color: var(--text-primary); border: 1px solid #94a3b8; border-radius: 8px;
             padding: 10px 20px; font-family: var(--font-body); font-size: 16px; cursor: pointer; transition: 0.2s;
@@ -185,24 +207,22 @@
 <body>
 
     <div id="deck">
-        <!-- 5-Minute Summary Slide -->
-        <div class="slide" id="slide-0" data-max-steps="2">
+        <div class="slide" id="slide-0" data-max-steps="3">
 
-<div style="border-bottom: 2px solid var(--border-color); margin-bottom: 15px; padding-bottom: 12px; display: flex; justify-content: center;">
-                
-                <!-- CSS Grid to perfectly align the ':' and '|' -->
+            <div style="border-bottom: 2px solid var(--border-color); margin-bottom: 15px; padding-bottom: 12px; display: flex; justify-content: center;">
                 <div style="display: grid; grid-template-columns: 1fr auto 1fr; column-gap: 10px; row-gap: 6px; align-items: baseline;">
-                    
-                    <!-- Title Row -->
-                    <h2 style="grid-column: 1; text-align: right; border-bottom: none; margin: 0; padding: 0;">
-                        A Tale of Two Biases
-                        <!-- The Missing Inductive Bias  -->
+
+                     <!-- Title Row -->
+                    <h2 style="grid-column: 1; text-align: right; border-bottom: none; margin: 0; padding: 0;" class="orange">
+                        <!-- A Tale of Two Biases -->
+                        Beyond the Manifold
                     </h2>
                     <h2 style="grid-column: 2; text-align: center; border-bottom: none; margin: 0; padding: 0;">
                         :
                     </h2>
-                    <h2 style="grid-column: 3; text-align: left; border-bottom: none; margin: 0; padding: 0;" class="orange">
-                        Beyond Manifold Learning
+                    <h2 style="grid-column: 3; text-align: left; border-bottom: none; margin: 0; padding: 0;">
+                        <!-- Beyond Manifold Learning -->
+                        The Algebraic Occam's Razor
                     </h2>
                     
                     <!-- Author Row -->
@@ -218,162 +238,94 @@
                     </p>
                     
                 </div>
-                
             </div>            
 
-
             <div class="three-col">
-                
                 <!-- COLUMN 1: Geometric Compression (Always visible) -->
                 <div>
-                    <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px;" class="orange">
-                        Geometric Compression 
-                    </h3>
-                    
+                    <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px;" class="orange">Geometric Compression</h3>
                     <div class="box">
                         <p style="font-weight: 500;">Interpolation over Low-Dimensional Manifold</p>
                         <div class="img-container" style="margin-top: 10px; margin-bottom: 1px;">
                             <img src="figures/manifold_learning.png" alt="Manifold Learning" style="width: 90%; max-height: 120px; object-fit: contain;">
                         </div>
                     </div>
-
                     <div class="box canonical">
                         <h3>Canonical Problem</h3>
                         <p style="margin-bottom: 10px; font-size: 13px;">Matrix Factorization &rarr; Matrix Completion</p>
-                        <div class="img-container" style="gap: 10px; margin-top: 10px; margin-bottom: 1px;">
+                        <div class="img-container" style="gap: 10px; margin-top: 12px; margin-bottom: 7px;">
                             <img src="figures/HyperCubes_matrix_product_3layer.png" alt="Matrix Factorization" style="width: 45%;">
-                            <img src="figures/low_rank_matrix_transparent_black_white.png" alt="Matrix Completion" style="width: 45%; max-height: 140px; object-fit: contain;">
+                            <img src="figures/low_rank_matrix_transparent_black_white.png" alt="Matrix Completion" style="width: 47%; max-height: 140px; object-fit: contain;">
                         </div>
                     </div>
-
                     <div class="box core-bias">
                         <h3>
-                            <span class="orange">Low-Rank</span> as Occam's Razor 
+                            <span class="orange">Low-Rank</span> as <span style="color: blue;">Occam's Razor</span> 
                             <!-- <span class="orange">Low Rank Bias</span> -->
                         </h3>
                         <div class="img-container" style="margin-top: -10px; margin-bottom: 0px;">
                             <img src="figures/linear_net_svd_loss_trim_transparent.png" alt="SVD loss" style="width: 90%; max-height: 100px; object-fit: contain;">
                         </div>
-                        <p style="font-size: 13px; margin-top: 0px; margin-bottom: -5px; font-weight: 600; color: green;">
-                        <!-- <p style="font-size: 13px; margin-top: 8px; font-weight: 600; color: var(--accent-danger);" class="violet"> -->
-                            <span class="orange">Rank</span>:
-                            Deep Learning's <span class="gray">implicit</span> simplicity.
+                        <p style="font-size: 13px; margin-top: 0px; margin-bottom: -5px; font-weight: 500; color: gray;">
+                            <span class="orange" style=" font-weight: 600;">Rank</span>: Deep Learning's implicit notion of <span style="color: blue">simplicity</span>.
                         </p>
                     </div>
                 </div>
 
                 <!-- This geometric compression of rank reduction is what drives feature learning and generalization in Deep Neural Nets. -->
-
-                <!-- COLUMN 2: Algebraic Setup (Step 1) -->
+                 
+                <!-- COLUMN 2: Algebraic Setup (Step 1 & 2) -->
                 <div class="fragment" data-step="1">
-                    <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px;" class="teal">
-                        Algebraic Compression 
-                    </h3>
-                    
+                    <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px; color: teal;">Algebraic Compression</h3>
                     <div class="box">
                         <p style="font-weight: 500;">Algebraic Structures over a Finite Set of Symbols</p>
-                        <!-- <div class="img-container" style="border: 2px dashed #cbd5e1; background: #f8fafc; border-radius: 8px; margin-top: 10px;"> -->
                         <div class="img-container" style="margin-top: 10px; margin-bottom: 1px;">
                             <img src="figures/Rubiks_cube_cayley_graph_transparent.png" alt="Algebraic Learning" style="width: 100%; max-height: 130px; object-fit: contain;">
-                            <!-- <img src="figures/53SiW.png" alt="Algebraic Learning" style="width: 100%; max-height: 110px; object-fit: contain;">
-                            <img src="figures/sKo3P.png" alt="Algebraic Learning" style="width: 100%; max-height: 110px; object-fit: contain;"> -->
-                            <!-- <img src="figures/Vel1.jpg" alt="Algebraic Learning" style="width: 100%; max-height: 110px; object-fit: contain;">
-                            <img src="figures/Vel2.jpg" alt="Algebraic Learning" style="width: 100%; max-height: 110px; object-fit: contain;"> -->
-                            
-                            <!-- <span class="gray" style="font-size: 13px; font-weight: 500;">
-                                [ Illustration of Algebraic Rules/Structures ]
-                            </span> -->
                         </div>
                     </div>
-
                     <div class="box canonical">
                         <h3>Canonical Problem</h3>
-                        <p style="margin-bottom: 10px; font-size: 13px;">Tensor Factorization &rarr; Algebraic Completion</p>
-                        <div class="img-container" style="gap: 10px; margin-top: 10px; margin-bottom: 1px;">
-                            <img src="figures/HyperCube_product_only_transparent_small.png" alt="Tensor Factorization" style="width: 45%;">
-                            <!-- <img src="figures/cayley_S3_letter_seed5_partial_white_title.png" alt="Algebraic Table" style="width: 45%; max-height: 140px; object-fit: contain;"> -->
-                            <img src="figures/cayley_addition_symbol.png" alt="Algebraic Table" style="width: 45%; max-height: 140px; object-fit: contain;">
+                        <p style="margin-left: 30px; margin-bottom: -1px; font-size: 13px; text-align: left; line-height: 1.35;">
+                            <span style="display: inline;">Tensor Factorization</span>
+                            <span style="display: inline;"> &rarr; Algebraic Completion</span>
+                            <br>
+                            <span style="display: block; text-align: left; margin-top: 2px; font-size: 11.5px; color: var(--text-secondary);">(matrix-embedding)</span>
+                        </p>
+                        <div class="img-container" style="gap: 10px; margin-top: 0px; margin-bottom: 3px;">
+                            <img class="fragment" src="figures/HyperCube_product_only_transparent_small.png" alt="Tensor Factorization" style="width: 35%; margin-top: 10px; margin-bottom: -3px;" data-step="2">
+                            <img src="figures/cayley_S3_letter_seed5_partial_white_title.png" alt="Algebraic Table" style="width: 40%; max-height: 140px; object-fit: contain;">
+                            <!-- <img src="figures/cayley_addition_symbol.png" alt="Algebraic Table" style="width: 45%; max-height: 140px; object-fit: contain;"> -->
                         </div>
                     </div>
 
-                    <!-- <div class="box core-bias">
-                        <h3>The <span class="teal">Associativity Bias</span></h3>
-                        <ul style="text-align: left; margin-left: 20px; font-size: 13px; margin-top: 5px; color: var(--text-primary);">
-                            <li style="margin-bottom: 6px;">
-                                <strong>1. The Objective (MDL):</strong> Within discrete algebraic operations, <em>associativity</em> yields the shortest description length.
-                            </li>
-                            <li style="margin-bottom: 2px;">
-                                <strong>2. The Mechanism (Theorem):</strong> Optimizing for a <strong>flat minimum</strong> (Hessian trace) naturally minimizes associativity violations.
-                            </li>
-                        </ul>
-                    </div> -->
-
-                    <div class="box core-bias">
+                    <div class="box core-bias fragment" data-step="1">
                         <h3>
-                            <span class="teal">Associativity/Closure</span> as Occam's Razor
-                            <!-- Flat Minima $\implies$ <span class="teal">Associativity</span> -->
+                            <span style="color: teal;">Associativity</span> as <span style="color: blue;">Occam's Razor</span>
+                            <!-- <span style="color: teal;">Associativity & Homomorphism</span>                             -->
                         </h3>
                         <ul style="text-align: left; margin-left: 20px; font-size: 13px; margin-top: 5px; color: var(--text-primary);">
                             <li style="margin-bottom: 6px;">
-                                <strong>Algorithmic Simplicity (MDL)</strong> 
-                                of a binary operation is (largely) determined by  <strong>Associativity</strong>.
-                                <!-- (minimum description length) of algebraic rules. -->
+                                <strong style="color: blue;">Algorithmic Simplicity (MDL)</strong> of binary operations is largely determined by <strong style="color: teal;">Associativity</strong>.
                             </li>
-                            <li style="margin-bottom: 2px;">
-                                <strong>Theorem:</strong> Hessian trace implicitly defines an exact, differentiable metric for associativity violations.
+                            <li class="fragment" data-step="2" style="margin-bottom: 2px;">
+                                <strong>Theorem:</strong> <strong style="color: purple;">Hessian trace</strong> implicitly defines an exact, differentiable metric for <strong style="color: teal;">Associativity violations</strong>.
                             </li>
-                        </ul>
-                        <p style="font-size: 13px; margin-top: 8px; font-weight: 600; color: var(--accent-danger);">
-                            <!-- Flatness natively discovers exact group structures. -->
-                            Flatness induces associativity as native simplicity.
+                        </ul>                
+
+                        <p style="font-size: 13px; text-align: left; margin-left: 8px; margin-top: 8px; font-weight: 500; color: gray;">
+                            <span class="teal" style="font-weight: 600;">Associativity</span>: Native measure of 
+                            <span class="blue" style="font-weight: 600;">algebraic simplicity</span> 
+                            <span class="fragment" data-step="2">
+                            — implicitly induced by <span style="color: purple; font-weight: 600;">Flatness</span> prior.</span>
                         </p>
                     </div>
-
-                    <!-- <div class="box core-bias">
-                        <h3>Flat Minimum $\implies$ <span class="teal">Associativity Bias</span></h3>
-                        <div style="text-align: left; font-size: 13px; margin-top: 8px; padding: 0 10px; color: var(--text-primary);">
-                            <p style="margin-bottom: 8px;">
-                                <strong>1. Occam's Razor:</strong> Shortest description length = Associativity.
-                            </p>
-                            <p>
-                                <strong>2. Optimization:</strong> Flatness inherently penalizes associativity violations, natively discovering group structures.
-                            </p>
-                        </div>
-                    </div> -->
-
-                    <!-- <div class="box core-bias">
-                        <h3>Flat Minimum $\implies$ <span class="teal">Associativity Bias</span></h3> <ul style="text-align: left; margin-left: 20px; font-size: 13px; margin-top: 5px; color: var(--text-primary);">
-                            <li style="margin-bottom: 4px;">
-                                <strong>Algorithmic Simplicity</strong> (Shortest Description)
-                                = Associativity (Group Isotopes) 
-                            </li>
-                            <li style="margin-bottom: 4px;">
-                                <strong>Theorem:</strong> 
-                                Optimizing for flatness (Hessian trace)
-                                yields an <em>exact, differentiable measure</em> of associativity.
-                            </li>
-                        </ul>
-                        <p style="font-size: 13px; margin-top: 8px; font-weight: 600; color: var(--accent-danger);">
-                            Flatness natively discovers exact group structures.
-                        </p>
-                    </div> -->
-
                 </div>
 
-                <!-- COLUMN 3: Algebraic Results (Step 2) -->
-                <div class="fragment" data-step="2">
-                    <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px;" class="teal">
-                        Results 
-                    </h3>
-                                    
+                <!-- COLUMN 3: Algebraic Results (Step 3) -->
+                <div class="fragment" data-step="3">
+                    <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px; color: teal;">Results</h3>
                     <div class="box" style="border-color: var(--accent-main); background: rgba(13, 148, 136, 0.03); height: 49%; display: flex; flex-direction: column; justify-content: center;">
-                        <h3 style="font-size: 16px; font-weight:400">
-                            <!-- Exact Recovery of <br>  -->
-                            <!-- <span class="gray">Exact</span> Group Structure <span class="gray">&</span> Unitary Representation -->
-                            Discovers <strong>Group Structure</strong> &  <strong>Unitary Representation</strong>
-                            <!-- Group Structure & Unitary Representation <br> Exact Recovery -->
-                        </h3>
-
+                        <p style="font-weight: 500;">Recovers Exact <strong>Group Tables</strong> & <strong>Unitary Representations</strong></p>
                         <div class="img-container video-crop step-element as-block" data-start="2">
                             <div class="video-overlay"><span>Product Tensor</span><span>Factor Tensor</span></div>
                             <video loop muted width="100%" height="100%" onloadedmetadata="this.playbackRate = 0.9;">
@@ -384,16 +336,13 @@
                     </div>
 
                     <div class="box" style="border-color: var(--accent-alt); background: rgba(124, 58, 237, 0.03); height: 47%; display: flex; flex-direction: column; justify-content: center; margin-top: 20px;">
-                        <h3 style="font-size: 16px;">
-                            Compression Efficiency
-                        </h3>
-                        
+                        <h3 style="font-size: 16px;">Compression Efficiency</h3>
                         <table class="custom-table" style="font-size: 13.5px; margin-bottom: 5px;">
                             <thead>
                                 <tr>
                                     <th>Target</th>
                                     <th><strong>gzip</strong></th>
-                                    <th style="text-align: center;"><strong><span class="teal">Our Method</span></strong></th>
+                                    <th style="text-align: center;"><strong style="color: teal;">Our Method</strong></th>
                                     <th style="text-align: center;"><strong>MDL Limit</strong></th>
                                 </tr>
                             </thead>
@@ -403,40 +352,132 @@
                                     <td>$C_{24}$</td>
                                     <td>77 Bytes</td>
                                     <td rowspan="3" style="vertical-align: middle; text-align: center; border-left: 1px solid var(--border-color);">
-                                        <strong><span class="teal">76 Bytes</span></strong><br>
+                                        <strong style="color: teal;">76 Bytes</strong><br>
                                     </td>
                                     <td rowspan="3" style="vertical-align: middle; text-align: center; border-left: 1px solid var(--border-color);">
                                         <strong>~30 Bytes</strong>
                                     </td>                                    
                                 </tr>
-                                <tr>
-                                    <td>$S_4$</td>
-                                    <td>206 Bytes</td>
-                                </tr>
-                                <tr>
-                                    <td>$S_4$ Isotope</td>
-                                    <td><span style="color: var(--accent-danger); font-weight: 600;">366 Bytes</span></td>
-                                </tr>
+                                <tr><td>$S_4$</td><td>206 Bytes</td></tr>
+                                <tr><td>$S_4$ Isotope</td><td><span style="color: var(--accent-danger); font-weight: 600;">366 Bytes</span></td></tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="box" style="margin-top: 20px;"">
-                        <h3><span class="teal">Algebraic Structure</span> vs <span class="orange">Smooth Manifold</span></h3>
-                                                    
-                        <p style="font-size: 13.5px; font-weight: 350; color: var(--text-primary); line-height: 1.4; margin-top: 5px; text-align: left;">
-                            Our framework unlocks a <strong>novel generalization paradigm</strong> for deep learning <span class="gray" style="font-weight: 600;">beyond smooth interpolation</span>: to natively discover <strong>exact algebraic structures</strong>.
+
+                    <div class="box" style="margin-top: 20px;">
+                        <h3>Expanding the Horizons of Generalization</h3>
+                        
+                        <p style="font-size: 13.5px; font-weight: 500; color: var(--text-primary); line-height: 1.4; margin-top: 8px; text-align: center;">
+                            Integrating two distinct generalization paradigms:
                         </p>
+                        
+                        <div style="font-size: 14px; margin-top: 5px; text-align: center; line-height: 1.5;">
+                            <strong><span class="orange">Smooth Manifold Learning</span></strong> 
+                            <span style="color: var(--text-secondary); font-size: 14px; font-weight: 600; margin: 0 8px;">+</span> 
+                            <strong style="color: teal;">Exact Algebraic Axioms</strong>
+                        </div>
+                        
+                        <!-- Future Direction -->
+                        <div style="font-size: 12.5px; font-style: italic; color: var(--text-secondary); margin-top: 12px; text-align: left;">
+                            &rarr; Toward natively discovering the discrete, symbolic laws of nature.
+                        </div>
                     </div>
+                    
+                </div>
+            </div>
+
+            <div class="speaker-note" id="inline-notes" style="display: none;">
+                
+                <!-- Step 0: Column 1 (Initial State) -->
+                <div class="step-element" data-start="0" data-end="0">
+                    <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 0 (0:00 - 0:45) - Column 1: The Status Quo</strong></p>
+                    <ul style="margin-left: 20px; line-height: 1.4;">
+
+                        <li style="margin-bottom: 8px;">
+                            Natural data resides on a very low-dimensional manifold compared to its ambient dimensions.
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            Deep neural networks generalize by exploiting this <strong>geometric compressibility</strong>—by discovering this intrinsic low-dimensional manifold and smoothly interpolating over it.
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            This mechanism has been rigorously studied in the canonical setting of matrix factorization on the classic matrix completion task, revealing exactly how deep architectures build a natural preference toward low-rank solutions.
+                        </li>
+                        <li>This implicit low-rank bias reveals the Occam's Razor of deep learning—the notion of simplicity innate to the model.
+                        </li>   
+                    </ul>
                 </div>
 
+                <!-- Step 1: Column 2 Top (First Click) -->
+                <div class="step-element" data-start="1" data-end="1">
+                    <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 1 (0:45 - 1:30) - Column 2: The New Paradigm</strong></p>
+                    <ul style="margin-left: 20px; line-height: 1.4;">
+                        <li style="margin-bottom: 8px;">
+                            While this geometric low-rank bias is highly effective for the continuous, in-distribution approximation of natural data, it has a fundamental blind spot. Standard deep learning is prone to latching onto spurious features and struggles to efficiently discover exact, algorithmic rules that robustly generalize out-of-distribution.
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            The canonical testbed for this is recovering a finite binary operation table—essentially the algebraic counterpart to matrix completion.
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            And standard deep learning models notoriously struggle at this task.
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            That's because "rank" is not the right Occam's Razor for algebraic structures.
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            The true measure of algorithmic simplicity is the Minimum Description Length, or MDL. And for binary operations, that MDL is largely determined by <strong>Associativity</strong>. This defines a fundamentally distinct notion of simplicity.
+                        </li>
+                        <li>How can we induce this bias?</li>                        
+                    </ul>
+                </div>
+
+                <!-- Step 2: Column 2 Bottom (Second Click) -->
+                <div class="step-element" data-start="2" data-end="2">
+                    <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 2 (1:30 - 2:30) - Column 2: Associativity & Flatness</strong></p>
+                    <ul style="margin-left: 20px; line-height: 1.4;">
+                        <li style="margin-bottom: 8px;">First, we use a tensor factorization model that maps symbols to matrix embeddings, rather than standard vector embeddings.</li>
+                        <li style="margin-bottom: 8px;">Then, we optimize for a <strong>flat minimum</strong> by minimizing the Hessian trace.</li>
+                        <li style="margin-bottom: 8px;">Remarkably, we prove this trace yields an exact, differentiable metric for associativity violations (up to isotopy) by enforcing homomorphism of the matrix embeddings.</li>
+                        <li>This proves that the discrete algebraic notion of simplicity can be natively induced within the continuous, differentiable framework of deep learning.</li>
+                    </ul>
+                </div>
+
+                <!-- Step 3: Column 3 (Third Click) -->
+                <div class="step-element as-block" data-start="3" data-end="3">
+                    <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 3 (2:30 - 5:00) - Column 3: Results & Counter-Example</strong></p>
+                    <ul style="margin-left: 20px; line-height: 1.4;">
+                        <li style="margin-bottom: 8px;">The numerical results confirm the theory. Our model natively discovers the exact group structures 
+                        <!-- from partial observations,  -->
+                        and the factor tensors converge to the exact unitary representation of the group.</li>
+
+                        <li style="margin-bottom: 8px;">
+                            Moreover, this model acts as a highly efficient compressor, significantly outperforming standard gzip.
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            For an $S_4$ isotope—essentially a disguised, permuted version of the group—standard gzip gets stuck at 366 bytes. Our method compresses it down to 76 bytes, operating much closer to the theoretical MDL limit.
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            This works because it genuinely identifies the exact algebraic laws underlying the table, rather than just exploiting surface-level patterns.
+                        </li>
+
+                        <li style="margin-bottom: 8px;"><strong>While not shown in this slide, our broader empirical results show this native structural bias also yields massive improvements in convergence speed and sample efficiency over standard models.</strong></li>
+
+                        <li style="margin-bottom: 8px;"><strong>Conclusion:</strong> This provides an existence proof for a fundamentally distinct paradigm, demonstrating that generalization can be driven by discovering exact algebraic axioms rather than standard smooth manifold interpolation.</li>
+                        
+                        <li>Ultimately, it points toward a future where neural networks don't just perform continuous approximation, but also natively discover the discrete, symbolic laws of nature—such as extracting unknown symmetry groups directly from raw data.
+                            Thank you.
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Minimal HUD Controls for clicking through -->
+    <!-- HUD Controls -->
     <div id="hud">
         <button class="btn" id="prev-btn"><i class="fa-solid fa-arrow-left"></i> Prev</button>
         <button class="btn" id="next-btn">Next <i class="fa-solid fa-arrow-right"></i></button>
+        <button class="btn" id="toggle-notes"><i class="fa-solid fa-comment-dots"></i> Toggle Speaker Notes</button>
+        <button class="btn" id="open-presenter-view"><i class="fa-solid fa-external-link-alt"></i> Presenter View</button> 
     </div>
 
     <!-- Logic Script -->
@@ -444,17 +485,34 @@
         document.addEventListener('DOMContentLoaded', () => {
             const slide = document.querySelector('.slide');
             let currentStep = 0; 
-            const maxSteps = parseInt(slide.getAttribute('data-max-steps') || 2);
+            const maxSteps = parseInt(slide.getAttribute('data-max-steps') || 3);
 
             function resizeDeck() {
                 const availableHeight = window.innerHeight - 80; 
                 const availableWidth = window.innerWidth;
-                const scale = Math.min(availableWidth / 1280, availableHeight / 720) * 0.95;
+                const scale = Math.min(availableWidth / 1280, availableHeight / 750) * 0.95;
                 document.documentElement.style.setProperty('--slide-scale', scale);
             }
             window.addEventListener('resize', resizeDeck);
             resizeDeck();
             slide.classList.add('active');
+
+            // Notes sync function
+            function updateNotes() {
+                const notes = document.querySelectorAll('.speaker-note .step-element');
+                notes.forEach(note => {
+                    const start = parseInt(note.getAttribute('data-start'));
+                    const end = parseInt(note.getAttribute('data-end'));
+                    if (currentStep >= start && currentStep <= end) {
+                        note.classList.add('active-note');
+                    } else {
+                        note.classList.remove('active-note');
+                    }
+                });
+
+                // Dispatch event so presenter view can listen
+                window.dispatchEvent(new CustomEvent('slideStepChanged', { detail: { step: currentStep } }));
+            }
 
             function updateSteps() {
                 const fragments = slide.querySelectorAll('[data-step]');
@@ -481,7 +539,11 @@
                         });
                     }
                 });
+                updateNotes();
             }
+
+            // Init notes display
+            updateNotes();
 
             document.getElementById('next-btn').addEventListener('click', () => {
                 if (currentStep < maxSteps) {
@@ -501,6 +563,68 @@
                 if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); document.getElementById('next-btn').click(); }
                 if (e.key === 'ArrowLeft') document.getElementById('prev-btn').click();
             });
+
+            // HUD Button logic
+            document.getElementById('toggle-notes').addEventListener('click', () => {
+                const notesDiv = document.getElementById('inline-notes');
+                notesDiv.style.display = notesDiv.style.display === 'none' || notesDiv.style.display === '' ? 'block' : 'none';
+            });
+
+            document.getElementById('open-presenter-view').addEventListener('click', () => {
+                const presenterWin = window.open('', 'PresenterView', 'width=600,height=800');
+                
+                // Write a basic presenter view HTML
+                presenterWin.document.write(`
+                    <html>
+                    <head>
+                        <title>Presenter View</title>
+                        <style>
+                            body { font-family: 'Inter', sans-serif; padding: 20px; background: #0f172a; color: #f8fafc; }
+                            h2 { color: #38bdf8; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+                            .step-container { display: none; margin-bottom: 20px; padding: 15px; background: #1e293b; border-radius: 8px;}
+                            .step-container.active { display: block; }
+                            li { margin-bottom: 12px; line-height: 1.5; font-size: 16px; }
+                        </style>
+                    </head>
+                    <body>
+                        <h2>Presenter View - Speaker Notes</h2>
+                        <div id="notes-wrapper">
+                            ${document.getElementById('inline-notes').innerHTML}
+                        </div>
+                        <script>
+                            // Initial sync
+                            function syncStep(step) {
+                                document.querySelectorAll('.step-element').forEach(el => {
+                                    el.classList.remove('active');
+                                    if(parseInt(el.getAttribute('data-start')) === step) {
+                                        el.classList.add('active');
+                                    }
+                                });
+                            }
+                            syncStep(${currentStep});
+                            
+                            // Listen to messages from the main window if possible, or poll
+                            // A simple polling mechanism to keep it synced without complex postMessage setup for local files
+                            setInterval(() => {
+                                if (window.opener && !window.opener.closed) {
+                                    const mainStep = window.opener.currentStep;
+                                    syncStep(mainStep);
+                                }
+                            }, 200);
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+                presenterWin.document.close();
+            });
+            
+            // Expose currentStep to global scope for the presenter window to read
+            window.currentStep = currentStep;
+            const originalUpdate = updateSteps;
+            updateSteps = function() {
+                originalUpdate();
+                window.currentStep = currentStep;
+            };
         });
     </script>
 </body>
