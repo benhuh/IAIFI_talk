@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IAIFI talk: Beyond Manifold Learning</title>
+    <title>IPAM talk: Beyond Smooth Manifold Learning</title>
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +24,54 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
+
+        @media print {
+            /* Hide UI elements */
+            #hud, #mobile-notes-view, .speaker-note {
+                display: none !important;
+            }
+
+            /* Reset body and deck for printing */
+            body {
+                background-color: white !important;
+                overflow: visible !important;
+                height: auto !important;
+            }
+            
+            #deck {
+                perspective: none !important;
+                display: block !important;
+                height: auto !important;
+            }
+
+            /* Force the slide to behave like a printed page */
+            .slide {
+                position: relative !important; /* Remove absolute positioning */
+                visibility: visible !important; 
+                opacity: 1 !important;
+                transform: none !important; /* Remove scaling */
+                width: 1280px !important;
+                height: 750px !important;
+                margin: 0 auto !important;
+                box-shadow: none !important;
+                border: none !important;
+                page-break-after: always; /* Force a new page after the slide */
+                z-index: 1 !important;
+            }
+
+            /* Ensure all fragments are visible for the printout */
+            .fragment {
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            /* Ensure background colors print */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
         /* --- CORE THEME (Light Mode) --- */
         :root {
             --bg-dark: #ffffff; 
@@ -195,7 +243,7 @@
             display: flex; justify-content: flex-end; padding: 0 40px;
             z-index: 100; opacity: 1; pointer-events: auto;
         }
-        #prev-btn, #next-btn { display: none; }
+        #prev-btn, #next-btn { }
         .btn {
             background: #ffffff; color: var(--text-primary); border: 1px solid #94a3b8; border-radius: 8px;
             padding: 10px 20px; font-family: var(--font-body); font-size: 16px; cursor: pointer; transition: 0.2s;
@@ -271,7 +319,7 @@
 <body>
 
     <div id="deck">
-        <div class="slide" id="slide-0" data-max-steps="3">
+        <div class="slide" id="slide-0" data-max-steps="2">
 
             <div style="border-bottom: 2px solid var(--border-color); margin-bottom: 15px; padding-bottom: 12px; display: flex; justify-content: center;">
                 <div style="display: grid; grid-template-columns: 1fr auto 1fr; column-gap: 10px; row-gap: 6px; align-items: baseline;">
@@ -279,7 +327,7 @@
                      <!-- Title Row -->
                     <h2 style="grid-column: 1; text-align: right; border-bottom: none; margin: 0; padding: 0;" class="orange">
                         <!-- A Tale of Two Biases -->
-                        Beyond the Manifold
+                        Beyond Smooth Manifolds
                     </h2>
                     <h2 style="grid-column: 2; text-align: center; border-bottom: none; margin: 0; padding: 0;">
                         :
@@ -309,7 +357,7 @@
                 <div>
                     <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px;" class="orange">Geometric Compression</h3>
                     <div class="box">
-                        <p style="font-weight: 500;">Interpolation over Low-Dimensional Manifold</p>
+                        <p style="font-weight: 500;">DL Interpolates over Low-Dimensional Manifold</p>
                         <div class="img-container" style="margin-top: 10px; margin-bottom: 1px;">
                             <img src="figures/manifold_learning.png" alt="Manifold Learning" style="width: 90%; max-height: 120px; object-fit: contain;">
                         </div>
@@ -356,37 +404,35 @@
                             <span style="display: block; text-align: left; margin-top: 2px; font-size: 11.5px; color: var(--text-secondary);">(matrix-embedding)</span>
                         </p>
                         <div class="img-container" style="gap: 10px; margin-top: 0px; margin-bottom: 3px;">
-                            <img class="fragment" src="figures/HyperCube_product_only_transparent_small.png" alt="Tensor Factorization" style="width: 35%; margin-top: 10px; margin-bottom: -3px;" data-step="2">
+                            <img class="fragment" src="figures/HyperCube_product_only_transparent_small.png" alt="Tensor Factorization" style="width: 35%; margin-top: 10px; margin-bottom: -3px;" data-step="1">
                             <img src="figures/cayley_S3_letter_seed5_partial_white_title.png" alt="Algebraic Table" style="width: 40%; max-height: 140px; object-fit: contain;">
                             <!-- <img src="figures/cayley_addition_symbol.png" alt="Algebraic Table" style="width: 45%; max-height: 140px; object-fit: contain;"> -->
                         </div>
                     </div>
 
                     <div class="box core-bias fragment" data-step="1">
-                        <h3>
+                        <h3 style="font-size: 17px; margin-bottom: 8px;">
                             <span style="color: teal;">Associativity</span> as <span style="color: blue;">Occam's Razor</span>
-                            <!-- <span style="color: teal;">Associativity & Homomorphism</span>                             -->
                         </h3>
-                        <ul style="text-align: left; margin-left: 20px; font-size: 13px; margin-top: 5px; color: var(--text-primary);">
-                            <li style="margin-bottom: 6px;">
-                                <strong style="color: blue;">Algorithmic Simplicity (MDL)</strong> of binary operations is largely determined by <strong style="color: teal;">Associativity</strong>.
-                            </li>
-                            <li class="fragment" data-step="2" style="margin-bottom: 2px;">
-                                <strong>Theorem:</strong> <strong style="color: purple;">Hessian trace</strong> implicitly defines an exact, differentiable metric for <strong style="color: teal;">Associativity violations</strong>.
-                            </li>
+                        <ul style="text-align: left; margin-left: 10px; font-size: 13px; margin-top: 20px; color: var(--text-primary); line-height: 1.35;">
+                            <!-- <li class="fragment" data-step="2" style="margin-bottom: 2px;"> -->
+                                <strong>Theorem:</strong> Regularizing via <strong style="color: purple;">MDL principle</strong> natively minimizes <strong style="color: teal;">Associativity Violations</strong>.
+                            <!-- </li> -->
+                            <!-- <li style="margin-bottom: 6px;">
+                                <strong style="color: blue;">Coding Length</strong> of a bianry operaion is indeed largely determined by its <strong style="color: teal;">Associativity</strong>.
+                            </li> -->
                         </ul>                
 
-                        <p style="font-size: 13px; text-align: left; margin-left: 8px; margin-top: 8px; font-weight: 500; color: gray;">
-                            <span class="teal" style="font-weight: 600;">Associativity</span>: Native measure of 
-                            <span class="blue" style="font-weight: 600;">algebraic simplicity</span> 
-                            <span class="fragment" data-step="2">
-                            — implicitly induced by <span style="color: purple; font-weight: 600;">Flatness</span> prior.</span>
+                        <p style="font-size: 13px; text-align: left; margin-left: 8px; margin-top: 16px; margin-bottom: 16px; font-weight: 500; color: gray;">
+                            <span class="teal" style="font-weight: 600;">Associativity</span>: Implicit notion of 
+                            <span class="blue" style="font-weight: 600;">simplicity for Algebraic Structures</span>
                         </p>
                     </div>
+
                 </div>
 
                 <!-- COLUMN 3: Algebraic Results (Step 3) -->
-                <div class="fragment" data-step="3">
+                <div class="fragment" data-step="2">
                     <h3 style="text-align: center; margin-bottom: 10px; font-size: 22px; color: teal;">Results</h3>
                     <div class="box" style="border-color: var(--accent-main); background: rgba(13, 148, 136, 0.03); height: 49%; display: flex; flex-direction: column; justify-content: center;">
                         <p style="font-weight: 500;">Recovers Exact <strong>Group Tables</strong> & <strong>Unitary Representations</strong></p>
@@ -443,7 +489,8 @@
                         
                         <!-- Future Direction -->
                         <div style="font-size: 12.5px; font-style: italic; color: var(--text-secondary); margin-top: 12px; text-align: left;">
-                            &rarr; Toward natively discovering the discrete, symbolic laws of nature.
+                            &rarr; 
+                            Toward learning mechanisms that natively discover interpretable algorithmic rules.
                         </div>
                     </div>
                     
@@ -494,7 +541,7 @@
                 </div>
 
                 <!-- Step 2: Column 2 Bottom (Second Click) -->
-                <div class="step-element" data-start="2" data-end="2">
+                <div class="step-element" data-start="1" data-end="1">
                     <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 2 (1:30 - 2:30) - Column 2: Associativity & Flatness</strong></p>
                     <ul style="margin-left: 20px; line-height: 1.4;">
                         <li style="margin-bottom: 8px;">First, we use a tensor factorization model that maps symbols to matrix embeddings, rather than standard vector embeddings.</li>
@@ -505,7 +552,7 @@
                 </div>
 
                 <!-- Step 3: Column 3 (Third Click) -->
-                <div class="step-element as-block" data-start="3" data-end="3">
+                <div class="step-element as-block" data-start="2" data-end="2">
                     <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 3 (2:30 - 5:00) - Column 3: Results & Counter-Example</strong></p>
                     <ul style="margin-left: 20px; line-height: 1.4;">
                         <li style="margin-bottom: 8px;">The numerical results confirm the theory. Our model natively discovers the exact group structures 
@@ -532,6 +579,147 @@
                 </div>
             </div>
         </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide" id="slide-1" data-max-steps="2">
+            
+            <!-- Header (Matches Slide 1) -->
+            <div style="border-bottom: 2px solid var(--border-color); margin-bottom: 10px; padding-bottom: 10px; display: flex; justify-content: center;">
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; column-gap: 10px; row-gap: 6px; align-items: baseline;">
+                    <h2 style="grid-column: 1; text-align: right; border-bottom: none; margin: 0; padding: 0;" class="orange">
+                        Beyond Smooth Manifolds
+                    </h2>
+                    <h2 style="grid-column: 2; text-align: center; border-bottom: none; margin: 0; padding: 0;">
+                        :
+                    </h2>
+                    <h2 style="grid-column: 3; text-align: left; border-bottom: none; margin: 0; padding: 0;">
+                        The Algebraic Occam's Razor
+                    </h2>
+                    <p style="grid-column: 1; text-align: right; font-size: 16px; color: var(--text-secondary); font-family: var(--font-body); margin: 0;">
+                        <strong><span style="color: teal;">Ben</span> Dongsung Huh</strong>
+                    </p>
+                    <p style="grid-column: 2; text-align: center; font-size: 16px; color: var(--text-secondary); font-family: var(--font-body); margin: 0;">
+                        |
+                    </p>
+                    <p style="grid-column: 3; text-align: left; font-size: 16px; color: var(--text-secondary); font-family: var(--font-body); margin: 0;" class="orange">
+                        Centaur AI  
+                    </p>
+                </div>
+            </div>            
+
+            <!-- Custom 2x2 Asymmetric Grid Layout (Tighter Boxes, Larger Figures) -->
+            <div style="display: flex; flex-direction: column; gap: 20px; height: 85%; padding-top: 5px;">
+                
+                <!-- TOP ROW: Theory Validation & Interpretability -->
+                <div style="display: flex; gap: 30px; height: 48%; justify-content: center;">
+                    
+                    <!-- Top Left: Scatter Plot (Width matched to Convergence Speed box) -->
+                    <div class="box" style="flex: 0 0 35%; max-width: 480px; display: flex; flex-direction: column; padding: 12px; margin: 0;">
+                        <h3 style="font-size: 16px; margin-bottom: 0px; color: var(--accent-main);"><strong>Tr(FIM)</strong> vs. Associativity</h3>
+                        
+                        <div class="img-container" style="flex-grow: 1; margin-top: -25px; margin-bottom: -25px; margin-left: -10px; height: 100%;">
+                            <img src="figures/scatter_B_vs_R_n6_2_small_no_gap.png" alt="Trace vs Associativity Scatter Plot" style="height: 80%; width: 100%; object-fit: contain;">
+                        </div>
+
+                        <p style="font-size: 15px; text-align: center; margin-top: 8px; color: var(--text-secondary); line-height: 1.3;">
+                            MDL loss grows with Associativity violations.
+                        </p>                        
+                    </div>
+
+                    <!-- Top Right: Block Diagonal (Width adjusted to align with bottom right box) -->
+                    <div class="box canonical fragment" data-step="0" style="flex: 1; max-width: 680px; display: flex; flex-direction: column; padding: 12px; margin: 0;">
+                        <h3 style="font-size: 16px; margin-bottom: 8px; color: teal;">Exact Group Representation Discovery (Irreps)</h3>
+                        
+                        <div class="img-container" style="flex-grow: 1; margin: 5px 0; display: flex; justify-content: center; align-items: center;">
+                            <img src="figures/binary_sym3_xy_61_ABC_block_diag_.png" alt="Block Diagonal Matrices" style="max-width: 90%; max-height: 220px; object-fit: contain;">
+                        </div>
+                    </div>
+                </div>                    
+                    
+
+
+                <!-- BOTTOM ROW: Efficiency & Grokking -->
+                <div style="display: flex; gap: 30px; height: 54%; justify-content: center;">
+                    
+                    <!-- Bottom Left: S5 Slow Old + Text Script -->
+                    <div class="box core-bias fragment" data-step="0" style="flex: 0 0 35%; max-width: 480px; display: flex; flex-direction: column; padding: 12px; margin: 0;">
+                        <h3 style="font-size: 16px; margin-bottom: 8px; color: var(--accent-main);">Convergence Speed</h3>
+
+                        <!-- S5 Plots Container -->
+                        <div style="position: relative; width: 100%; height: 180px; margin-top: 5px;">
+                            <div class="step-element as-block" data-start="0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center;">
+                                <img src="figures/S5_slow_Transformer_only.png" alt="S5 Transformer" style="height: 100%; width: auto; object-fit: contain;">
+                            </div>
+                            <div class="step-element as-block fragment" data-step="1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center;">
+                                <img src="figures/S5_slow_HyperCube_only.png" alt="S5 Hypercube" style="height: 100%; width: auto; object-fit: contain;">
+                            </div>
+                            <div class="step-element as-block fragment" data-step="2" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center;">
+                                <img src="figures/S5_slow_HyperCube_SE_only.png" alt="S5 Hypercube SE" style="height: 100%; width: auto; object-fit: contain;">
+                            </div>
+                        </div>                        
+
+                        <!-- Your Text Script List -->
+                        <ul style="text-align: left; margin-left: 0px; font-size: 10.5px; margin-top: 20px; color: var(--text-primary); line-height: 1.4;">
+                            <p style="margin-bottom: 6px;"><strong><span class="blue">Transformer:</span></strong> Unspecific bias. Slow and unreliable.</p>
+                            <p class="fragment" data-step="0" style="margin-bottom: 6px;"><strong><span class="orange">HyperCube:</span></strong> Associativity bias. 
+                            <!-- to Group isotopes.  -->
+                            Fast convergence (<span class="teal">1000$\times$</span>).</p>
+                            <!-- <li class="fragment" data-step="2"><strong><span class="teal">Synchronized Embedding</span></strong> (SE: <span class="gray">$A_g=B_g=C_g^\dagger$</span>) removes isotopy (focused bias to Groups). Faster convergence (<span class="teal">1000$\times$</span>).</li> -->
+                        </ul>
+                    </div>
+
+                    <!-- Bottom Right: Grokking Shared (Maximized width for subplots) -->
+                    <div class="box core-bias fragment" data-step="0" style="flex: 1; max-width: 680px; display: flex; flex-direction: column; padding: 12px; margin: 0;">
+                        <h3 style="font-size: 16px; margin-bottom: 8px; color: teal;">Generalization Performance</h3>
+
+                        <div style="position: relative; width: 90%; height: 120px; margin-top: -10px; margin-left: 30px;">
+
+                            <div class="step-element as-block" data-start="0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; justify-content: center;"> 
+                                <img src="figures/grokking_Transformer_only.png" alt="Transformer" style="width: 90%;">
+                            </div>
+                            <div class="step-element as-block fragment" data-step="1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; justify-content: center;">
+                                <img src="figures/grokking_HyperCube_only.png" alt="Hypercube" style="width: 90%;">
+                            </div>
+                            <div class="step-element as-block fragment" data-step="2" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; justify-content: center;">
+                                <img src="figures/grokking_HyperCube_SE_only.png" alt="Hypercube SE" style="width: 90%;">
+                            </div>
+                        </div>                        
+                        
+                        <!-- <div class="img-container" style="flex-grow: 1; margin: -5px 0; height: 100%;">
+                            <img src="figures/grokking_HyperCube_shared_transparent.png" alt="Grokking Phase Transitions" style="width: 95%; height: 95%; object-fit: contain;">
+                        </div> -->
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Speaker Notes for Slide 2 -->
+            <div class="speaker-note" id="inline-notes-slide-1" style="display: none;">
+                <div class="step-element" data-start="0" data-end="0">
+                    <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 0 (1:00 - 1:15) - Top Row: Theory & Interpretability</strong></p>
+                    <ul style="margin-left: 20px; line-height: 1.4;">
+                        <li>We can validate this theory empirically. The scatter plot shows a strict monotonic relationship: the functional coding cost penalty grows with true associativity violations.</li>
+                        <li>Because the model natively optimizes for this algebraic Occam's razor, the resulting internal representations become highly interpretable, natively collapsing into exact block-diagonal irreducible representations.</li>
+                    </ul>
+                </div>
+                <div class="step-element" data-start="0" data-end="1">
+                    <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 1 (1:15 - 1:35) - Bottom Row: HyperCube Efficiency</strong></p>
+                    <ul style="margin-left: 20px; line-height: 1.4;">
+                        <li>This associativity directly translates to extreme sample efficiency and convergence speed.</li>
+                        <li>Standard transformers have unspecific bias, leading to slow convergence. HyperCube induces a structural bias to group isotopes, achieving 100x faster convergence.</li>
+                        <!-- <li>On the right, we see the complete elimination of the grokking phase compared to baseline models.</li> -->
+                    </ul>
+                </div>
+                <div class="step-element" data-start="2" data-end="2">
+                    <p style="color: #38bdf8; margin-bottom: 10px;"><strong>Step 2 (1:35 - 2:00) - Bottom Left: Synchronized Embedding Payoff</strong></p>
+                    <ul style="margin-left: 20px; line-height: 1.4;">
+                        <li>By enforcing synchronized embeddings, we remove the isotopy, focusing the bias strictly onto exact groups.</li>
+                        <li>This yields an astounding 1000x faster convergence speed. By natively discovering the interpretable algorithmic rules, the model bypasses delayed generalization entirely.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- HUD Controls -->
@@ -561,9 +749,9 @@
     <!-- Logic Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const slide = document.querySelector('.slide');
+            const slides = document.querySelectorAll('.slide');
+            let currentSlideIdx = 0; 
             let currentStep = 0; 
-            const maxSteps = parseInt(slide.getAttribute('data-max-steps') || 3);
 
             function resizeDeck() {
                 const availableHeight = window.innerHeight - 80; 
@@ -573,11 +761,25 @@
             }
             window.addEventListener('resize', resizeDeck);
             resizeDeck();
-            slide.classList.add('active');
+            
+            // Initialize first slide
+            slides[currentSlideIdx].classList.add('active');
+
+            function updateDeck() {
+                slides.forEach((s, idx) => {
+                    if (idx === currentSlideIdx) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+                updateSteps();
+            }
 
             // Notes sync function
             function updateNotes() {
-                const notes = document.querySelectorAll('.speaker-note .step-element');
+                const activeSlide = slides[currentSlideIdx];
+                const notes = activeSlide.querySelectorAll('.speaker-note .step-element');
                 notes.forEach(note => {
                     const start = parseInt(note.getAttribute('data-start'));
                     const end = parseInt(note.getAttribute('data-end'));
@@ -587,31 +789,28 @@
                         note.classList.remove('active-note');
                     }
                 });
-
-                // Dispatch event so presenter view can listen
-                window.dispatchEvent(new CustomEvent('slideStepChanged', { detail: { step: currentStep } }));
             }
 
             function updateSteps() {
-                const fragments = slide.querySelectorAll('[data-step]');
+                const activeSlide = slides[currentSlideIdx];
+                const fragments = activeSlide.querySelectorAll('[data-step]');
+                
                 fragments.forEach(el => {
                     const step = parseInt(el.getAttribute('data-step'));
                     const shouldShow = currentStep >= step;
                     if (shouldShow) {
                         el.classList.add('visible');
-                        // Auto-play any videos inside this fragment (muted to satisfy autoplay policies)
+                        // Auto-play any videos inside this fragment
                         el.querySelectorAll('video').forEach(v => {
                             try {
                                 v.muted = true;
                                 const p = v.play();
                                 if (p && p.catch) p.catch(() => {});
-                            } catch (e) {
-                                // ignore
-                            }
+                            } catch (e) {}
                         });
                     } else {
                         el.classList.remove('visible');
-                        // Pause and rewind any videos when fragment hidden
+                        // Pause and rewind videos when hidden
                         el.querySelectorAll('video').forEach(v => {
                             try { v.pause(); v.currentTime = 0; } catch (e) {}
                         });
@@ -624,9 +823,17 @@
             updateNotes();
 
             document.getElementById('next-btn').addEventListener('click', () => {
+                const activeSlide = slides[currentSlideIdx];
+                const maxSteps = parseInt(activeSlide.getAttribute('data-max-steps') || 0);
+                
                 if (currentStep < maxSteps) {
                     currentStep++;
                     updateSteps();
+                } else if (currentSlideIdx < slides.length - 1) {
+                    // Move to next slide
+                    currentSlideIdx++;
+                    currentStep = 0;
+                    updateDeck();
                 }
             });
 
@@ -634,6 +841,12 @@
                 if (currentStep > 0) {
                     currentStep--;
                     updateSteps();
+                } else if (currentSlideIdx > 0) {
+                    // Move to previous slide and go to its last step
+                    currentSlideIdx--;
+                    const activeSlide = slides[currentSlideIdx];
+                    currentStep = parseInt(activeSlide.getAttribute('data-max-steps') || 0);
+                    updateDeck();
                 }
             });
 
@@ -644,178 +857,12 @@
 
             // HUD Button logic
             document.getElementById('toggle-notes').addEventListener('click', () => {
-                const notesDiv = document.getElementById('inline-notes');
-                notesDiv.style.display = notesDiv.style.display === 'none' || notesDiv.style.display === '' ? 'block' : 'none';
+                // Toggle notes only for the currently active slide
+                const activeNotes = slides[currentSlideIdx].querySelector('.speaker-note');
+                if (activeNotes) {
+                    activeNotes.style.display = activeNotes.style.display === 'none' || activeNotes.style.display === '' ? 'block' : 'none';
+                }
             });
-
-document.getElementById('open-presenter-view').addEventListener('click', () => {
-                const presenterWin = window.open('', 'PresenterView', 'width=600,height=800');
-                
-                // Write a basic presenter view HTML
-                presenterWin.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>Presenter View</title>
-                        <!-- 1. Viewport tag for mobile rendering -->
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-                        <style>
-                            body { 
-                                font-family: 'Inter', sans-serif; 
-                                padding: 20px 20px 100px 20px; /* Extra bottom padding for fixed controls */
-                                background: #0f172a; 
-                                color: #f8fafc; 
-                                margin: 0;
-                            }
-                            h2 { color: #38bdf8; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-top: 0; }
-                            .step-element { display: none; margin-bottom: 20px; padding: 15px; background: #1e293b; border-radius: 8px;}
-                            .step-element.active { display: block; }
-                            li { margin-bottom: 12px; line-height: 1.5; font-size: 16px; }
-       
-                            
-                            /* 2. Mobile-friendly, fixed-bottom control bar */
-                            #controls {
-                                position: fixed;
-                                bottom: 0;
-                                left: 0;
-                                width: 100%;
-                                background: #0f172a;
-                                display: flex;
-                                padding: 15px;
-                                box-sizing: border-box;
-                                border-top: 1px solid #334155;
-                                gap: 15px;
-                                z-index: 1000;
-                            }
-                            .ctrl-btn {
-                                flex: 1;
-                                background: #38bdf8;
-                                color: #0f172a;
-                                border: none;
-                                padding: 18px;
-                                font-size: 20px;
-                                font-weight: bold;
-                                border-radius: 8px;
-                                cursor: pointer;
-                                touch-action: manipulation; /* Prevents 300ms delay and double-tap zoom on iOS/Android */
-                            }
-                            .ctrl-btn:active { background: #0ea5e9; }
-                        </style>
-                    </head>
-                    <body>
-                        <h2>Speaker Notes</h2>
-                        <div id="notes-wrapper">
-                            ${document.getElementById('inline-notes').innerHTML}
-                        </div>
-                        
-                        <!-- 3. The control buttons -->
-                        <div id="controls">
-                            <button class="ctrl-btn" id="p-prev-btn">Prev</button>
-                            <button class="ctrl-btn" id="p-next-btn">Next</button>
-                        </div>
-
-                        <script>
-                            // 4. Send clicks back to the main presentation window
-                            document.getElementById('p-prev-btn').addEventListener('click', () => {
-                                if (window.opener && !window.opener.closed) {
-                                    window.opener.document.getElementById('prev-btn').click();
-                                }
-                            });
-                            
-                            document.getElementById('p-next-btn').addEventListener('click', () => {
-                                if (window.opener && !window.opener.closed) {
-                                    window.opener.document.getElementById('next-btn').click();
-                                }
-                            });
-
-                            // Initial sync
-                            function syncStep(step) {
-                                document.querySelectorAll('.step-element').forEach(el => {
-                                    el.classList.remove('active');
-                                    const start = parseInt(el.getAttribute('data-start') || 0);
-                                    const end = parseInt(el.getAttribute('data-end') || start);
-                                    
-                                    if(step >= start && step <= end) {
-                                        el.classList.add('active');
-                                    }
-                                });
-                            }
-                            
-                            // Initialize immediately
-                            if (window.opener && !window.opener.closed) {
-                                syncStep(window.opener.currentStep);
-                            }
-                            
-                            // Poll for changes in case the main window is advanced via keyboard
-                            setInterval(() => {
-                                if (window.opener && !window.opener.closed) {
-                                    const mainStep = window.opener.currentStep;
-                                    syncStep(mainStep);
-                                }
-                            }, 200);
-                        <\/script>
-     
-                    </body>
-                    </html>
-                `);
-                presenterWin.document.close();
-            }); 
-                       
-            // Expose currentStep to global scope for the presenter window to read
-            window.currentStep = currentStep;
-            const originalUpdate = updateSteps;
-            updateSteps = function() {
-                originalUpdate();
-                window.currentStep = currentStep;
-            };
-
-// --- MOBILE NOTES MODE LOGIC ---
-            const mobileNotesView = document.getElementById('mobile-notes-view');
-            const mobileNotesContent = document.getElementById('mobile-notes-content');
-            
-            function syncMobileNotes() {
-                if (!mobileNotesView.classList.contains('active')) return;
-                
-                const notes = mobileNotesContent.querySelectorAll('.mobile-step-element');
-                notes.forEach(el => {
-                    el.classList.remove('active');
-                    const start = parseInt(el.getAttribute('data-start') || 0);
-                    const end = parseInt(el.getAttribute('data-end') || start);
-                    
-                    if(currentStep >= start && currentStep <= end) {
-                        el.classList.add('active');
-                    }
-                });
-            }
-
-            document.getElementById('mobile-notes-btn').addEventListener('click', () => {
-                // Clone the notes from the main deck into the mobile view
-                mobileNotesContent.innerHTML = document.getElementById('inline-notes').innerHTML;
-                
-                // Rename classes to isolate mobile logic from main slide logic
-                const notes = mobileNotesContent.querySelectorAll('.step-element');
-                notes.forEach(n => {
-                    n.classList.remove('step-element');
-                    n.classList.add('mobile-step-element');
-                });
-                
-                mobileNotesView.classList.add('active');
-                syncMobileNotes();
-            });
-
-            document.getElementById('close-mobile-btn').addEventListener('click', () => {
-                mobileNotesView.classList.remove('active');
-            });
-
-            document.getElementById('m-prev-btn').addEventListener('click', () => {
-                document.getElementById('prev-btn').click(); // Triggers main deck logic
-                syncMobileNotes();
-            });
-
-            document.getElementById('m-next-btn').addEventListener('click', () => {
-                document.getElementById('next-btn').click(); // Triggers main deck logic
-                syncMobileNotes();
-            });            
         });
     </script>
 </body>
